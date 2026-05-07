@@ -4,7 +4,6 @@ import {
   RadarChart, 
   PolarGrid, 
   PolarAngleAxis, 
-  PolarRadiusAxis, 
   ResponsiveContainer,
   LineChart,
   Line,
@@ -12,92 +11,107 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
 } from 'recharts';
-import { Award, Zap, Heart, Shield, Star } from 'lucide-react';
+import { ShieldCheck, Zap, Activity, Info } from 'lucide-react';
 
 const radarData = [
-  { subject: 'Productivity', A: 120, B: 110, fullMark: 150 },
-  { subject: 'Quality', A: 98, B: 130, fullMark: 150 },
-  { subject: 'Collaboration', A: 86, B: 130, fullMark: 150 },
-  { subject: 'Reliability', A: 99, B: 100, fullMark: 150 },
-  { subject: 'Technical', A: 85, B: 90, fullMark: 150 },
-  { subject: 'Leadership', A: 65, B: 85, fullMark: 150 },
+  { subject: 'Output', A: 120, B: 110 },
+  { subject: 'Stability', A: 98, B: 130 },
+  { subject: 'Velocity', A: 86, B: 130 },
+  { subject: 'Compliance', A: 99, B: 100 },
+  { subject: 'Technical', A: 85, B: 90 },
+  { subject: 'Ops', A: 65, B: 85 },
 ];
 
 const performanceHistory = [
-  { month: 'Jan', score: 72 },
-  { month: 'Feb', score: 75 },
-  { month: 'Mar', score: 82 },
-  { month: 'Apr', score: 80 },
-  { month: 'May', score: 88 },
-  { month: 'Jun', score: 92 },
+  { month: 'JAN', score: 72 },
+  { month: 'FEB', score: 75 },
+  { month: 'MAR', score: 82 },
+  { month: 'APR', score: 80 },
+  { month: 'MAY', score: 88 },
+  { month: 'JUN', score: 92 },
 ];
 
 const Performance = () => {
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold">Performance Analytics 📈</h1>
-          <p className="text-gray-400">Deep dive into organizational excellence.</p>
+          <h1 className="text-3xl font-bold tracking-tight mb-2">Performance Analytics</h1>
+          <p className="text-[#8b949e]">Internal benchmarking and efficiency analysis</p>
         </div>
         <div className="flex gap-4">
-          <div className="glass-card flex items-center gap-3 py-2 px-4">
-            <span className="text-primary font-bold">Q2 2026</span>
-            <span className="text-gray-500">|</span>
-            <span className="text-emerald-400">+14% Growth</span>
+          <div className="px-3 py-1.5 bg-[#238636]/10 border border-[#238636]/20 rounded-lg flex items-center gap-2">
+            <Activity size={14} className="text-[#3fb950]" />
+            <span className="text-[#3fb950] text-xs font-bold uppercase tracking-widest">Optimal State</span>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Skill Analysis Radar */}
-        <div className="glass-card lg:col-span-1">
-          <h3 className="text-xl font-bold mb-6">Competency Map 🗺️</h3>
-          <div className="h-[350px]">
+        <div className="card lg:col-span-1 p-6 flex flex-col">
+          <div className="flex justify-between items-center mb-8">
+            <h3 className="text-lg font-bold">Competency Matrix</h3>
+            <Info size={16} className="text-[#8b949e]" />
+          </div>
+          <div className="h-[320px] flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                <PolarGrid stroke="rgba(255,255,255,0.1)" />
-                <PolarAngleAxis dataKey="subject" stroke="#94a3b8" fontSize={12} />
+                <PolarGrid stroke="#30363d" />
+                <PolarAngleAxis dataKey="subject" stroke="#8b949e" fontSize={10} fontWeight="bold" />
                 <Radar
-                  name="Current Period"
+                  name="System"
                   dataKey="A"
-                  stroke="#6366f1"
-                  fill="#6366f1"
-                  fillOpacity={0.6}
+                  stroke="#4f46e5"
+                  fill="#4f46e5"
+                  fillOpacity={0.4}
                 />
                 <Radar
-                  name="Target"
+                  name="Baseline"
                   dataKey="B"
-                  stroke="#10b981"
-                  fill="#10b981"
+                  stroke="#3fb950"
+                  fill="#3fb950"
                   fillOpacity={0.1}
                 />
               </RadarChart>
             </ResponsiveContainer>
           </div>
+          <div className="mt-4 flex gap-4 justify-center text-[10px] uppercase font-bold tracking-widest">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-indigo-500" />
+              <span className="text-[#8b949e]">System Actual</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="text-[#8b949e]">Target Baseline</span>
+            </div>
+          </div>
         </div>
 
-        {/* Performance Over Time */}
-        <div className="glass-card lg:col-span-2">
-          <h3 className="text-xl font-bold mb-6">Aggregate Performance Trend 🌊</h3>
-          <div className="h-[350px]">
+        <div className="card lg:col-span-2 p-6 flex flex-col">
+          <div className="flex justify-between items-center mb-8">
+            <h3 className="text-lg font-bold">Efficiency Timeline</h3>
+            <div className="flex gap-2">
+              <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+              <span className="text-[10px] text-[#8b949e] uppercase font-bold tracking-widest">Real-time Data</span>
+            </div>
+          </div>
+          <div className="h-[320px] flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={performanceHistory}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e293b" />
-                <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#30363d" />
+                <XAxis dataKey="month" stroke="#8b949e" fontSize={10} tickLine={false} axisLine={false} tickMargin={10} />
+                <YAxis stroke="#8b949e" fontSize={10} tickLine={false} axisLine={false} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                   contentStyle={{ backgroundColor: '#161b22', border: '1px solid #30363d', borderRadius: '8px' }}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="score" 
-                  stroke="#6366f1" 
-                  strokeWidth={4} 
-                  dot={{ fill: '#6366f1', strokeWidth: 2, r: 6, stroke: '#fff' }} 
-                  activeDot={{ r: 8, strokeWidth: 0 }}
+                  stroke="#4f46e5" 
+                  strokeWidth={3} 
+                  dot={{ fill: '#4f46e5', strokeWidth: 2, r: 4, stroke: '#0d1117' }} 
+                  activeDot={{ r: 6, strokeWidth: 0 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -106,33 +120,21 @@ const Performance = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="glass-card flex items-center gap-4 border-l-4 border-primary">
-          <div className="p-3 bg-primary/10 text-primary rounded-xl"><Star size={24} /></div>
-          <div>
-            <p className="text-gray-400 text-sm">Top Performer</p>
-            <p className="font-bold">Sarah Chen 👑</p>
-          </div>
+        <div className="card p-4 border-l-2 border-indigo-500">
+          <p className="text-[10px] text-[#8b949e] uppercase font-bold tracking-widest mb-1">Top Performer</p>
+          <p className="text-sm font-bold text-[#f0f6fc]">Sarah Chen</p>
         </div>
-        <div className="glass-card flex items-center gap-4 border-l-4 border-emerald-500">
-          <div className="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl"><Zap size={24} /></div>
-          <div>
-            <p className="text-gray-400 text-sm">Highest Growth</p>
-            <p className="font-bold">+22% Marcus T. ⚡</p>
-          </div>
+        <div className="card p-4 border-l-2 border-emerald-500">
+          <p className="text-[10px] text-[#8b949e] uppercase font-bold tracking-widest mb-1">Highest Velocity</p>
+          <p className="text-sm font-bold text-[#f0f6fc]">Marcus Thorne</p>
         </div>
-        <div className="glass-card flex items-center gap-4 border-l-4 border-rose-500">
-          <div className="p-3 bg-rose-500/10 text-rose-500 rounded-xl"><Heart size={24} /></div>
-          <div>
-            <p className="text-gray-400 text-sm">Culture Champ</p>
-            <p className="font-bold">Aisha Gupta ❤️</p>
-          </div>
+        <div className="card p-4 border-l-2 border-amber-500">
+          <p className="text-[10px] text-[#8b949e] uppercase font-bold tracking-widest mb-1">Quality Lead</p>
+          <p className="text-sm font-bold text-[#f0f6fc]">James Wilson</p>
         </div>
-        <div className="glass-card flex items-center gap-4 border-l-4 border-amber-500">
-          <div className="p-3 bg-amber-500/10 text-amber-500 rounded-xl"><Shield size={24} /></div>
-          <div>
-            <p className="text-gray-400 text-sm">Risk Factor</p>
-            <p className="font-bold">2 At-Risk Depts ⚠️</p>
-          </div>
+        <div className="card p-4 border-l-2 border-[#30363d]">
+          <p className="text-[10px] text-[#8b949e] uppercase font-bold tracking-widest mb-1">System Health</p>
+          <p className="text-sm font-bold text-[#f0f6fc]">99.8% Nominal</p>
         </div>
       </div>
     </div>

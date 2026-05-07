@@ -6,7 +6,9 @@ import {
   Award,
   ArrowUpRight,
   ArrowDownRight,
-  MoreVertical
+  MoreVertical,
+  Calendar,
+  Filter
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -21,32 +23,24 @@ import {
 } from 'recharts';
 
 const data = [
-  { name: 'Jan', performance: 65, efficiency: 70 },
-  { name: 'Feb', performance: 75, efficiency: 82 },
-  { name: 'Mar', performance: 85, efficiency: 78 },
-  { name: 'Apr', performance: 78, efficiency: 85 },
-  { name: 'May', performance: 90, efficiency: 92 },
-  { name: 'Jun', performance: 95, efficiency: 88 },
+  { name: 'JAN', performance: 65, efficiency: 70 },
+  { name: 'FEB', performance: 75, efficiency: 82 },
+  { name: 'MAR', performance: 85, efficiency: 78 },
+  { name: 'APR', performance: 78, efficiency: 85 },
+  { name: 'MAY', performance: 90, efficiency: 92 },
+  { name: 'JUN', performance: 95, efficiency: 88 },
 ];
 
-const StatCard = ({ title, value, change, icon, color, emoji }) => (
-  <div className="glass-card flex flex-col gap-4">
-    <div className="flex justify-between items-start">
-      <div className={`p-3 rounded-xl bg-${color}/10 text-${color}`}>
-        {icon}
-      </div>
-      <span className="text-xl">{emoji}</span>
+const StatCard = ({ title, value, change, icon, trend }) => (
+  <div className="card p-6">
+    <div className="flex justify-between items-start mb-4">
+      <div className="text-[#8b949e]">{icon}</div>
+      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${trend === 'up' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'}`}>
+        {trend === 'up' ? '+' : '-'}{change}%
+      </span>
     </div>
-    <div>
-      <p className="text-gray-400 text-sm font-medium">{title}</p>
-      <div className="flex items-baseline gap-2 mt-1">
-        <h3 className="text-2xl font-bold">{value}</h3>
-        <span className={`text-xs flex items-center ${change > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-          {change > 0 ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
-          {Math.abs(change)}%
-        </span>
-      </div>
-    </div>
+    <p className="text-[#8b949e] text-xs font-bold uppercase tracking-widest mb-1">{title}</p>
+    <h3 className="text-2xl font-bold text-[#f0f6fc]">{value}</h3>
   </div>
 );
 
@@ -54,17 +48,18 @@ const Dashboard = () => {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold">Business Overview 📊</h1>
-          <p className="text-gray-400 mt-1">Welcome back, here's what's happening today.</p>
+          <h1 className="text-3xl font-bold tracking-tight mb-2">Operational Insights</h1>
+          <p className="text-[#8b949e]">Enterprise performance metrics for Q2 2026</p>
         </div>
-        <div className="flex gap-3">
-          <button className="glass-card py-2 px-4 text-sm font-medium hover:bg-white/5 transition-colors">
-            Download Report 📥
+        <div className="flex gap-2">
+          <button className="btn bg-[#21262d] text-[#c9d1d9] border border-[#30363d] hover:bg-[#30363d] text-sm">
+            <Calendar size={16} className="mr-2" />
+            Last 30 Days
           </button>
-          <button className="btn-primary">
-            Manage Team 👥
+          <button className="btn btn-primary text-sm">
+            Generate Report
           </button>
         </div>
       </div>
@@ -72,84 +67,87 @@ const Dashboard = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
-          title="Total Employees" 
-          value="124" 
-          change={12} 
-          icon={<Users size={20} />} 
-          color="primary"
-          emoji="👥"
+          title="Headcount" 
+          value="1,240" 
+          change={4} 
+          icon={<Users size={18} />} 
+          trend="up"
         />
         <StatCard 
-          title="Avg. Performance" 
+          title="Global Perf." 
           value="88.4%" 
-          change={5.2} 
-          icon={<TrendingUp size={20} />} 
-          color="emerald"
-          emoji="📈"
+          change={1.2} 
+          icon={<TrendingUp size={18} />} 
+          trend="up"
         />
         <StatCard 
-          title="Goals Completed" 
+          title="Goal Delta" 
           value="42" 
-          change={-2.4} 
-          icon={<Target size={20} />} 
-          color="amber"
-          emoji="🎯"
+          change={2.4} 
+          icon={<Target size={18} />} 
+          trend="down"
         />
         <StatCard 
-          title="Recognition Given" 
-          value="15" 
-          change={18} 
-          icon={<Award size={20} />} 
-          color="purple"
-          emoji="🏆"
+          title="Retention" 
+          value="98.2%" 
+          change={0.8} 
+          icon={<Award size={18} />} 
+          trend="up"
         />
       </div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="glass-card min-h-[400px] flex flex-col">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold">Performance Trends ✨</h3>
-            <button className="p-2 hover:bg-white/5 rounded-lg"><MoreVertical size={18} /></button>
+        <div className="card p-6 min-h-[420px] flex flex-col">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h3 className="text-lg font-bold">Performance Index</h3>
+              <p className="text-xs text-[#8b949e]">System-wide output tracking</p>
+            </div>
+            <Filter size={16} className="text-[#8b949e] cursor-pointer" />
           </div>
           <div className="flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data}>
                 <defs>
                   <linearGradient id="colorPerf" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e293b" />
-                <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#30363d" />
+                <XAxis dataKey="name" stroke="#8b949e" fontSize={10} tickLine={false} axisLine={false} tickMargin={10} />
+                <YAxis stroke="#8b949e" fontSize={10} tickLine={false} axisLine={false} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: '#fff' }}
+                  contentStyle={{ backgroundColor: '#161b22', border: '1px solid #30363d', borderRadius: '8px' }}
+                  itemStyle={{ color: '#f0f6fc', fontSize: '12px' }}
+                  labelStyle={{ color: '#8b949e', fontSize: '10px', marginBottom: '4px' }}
                 />
-                <Area type="monotone" dataKey="performance" stroke="#6366f1" fillOpacity={1} fill="url(#colorPerf)" strokeWidth={3} />
+                <Area type="monotone" dataKey="performance" stroke="#4f46e5" fillOpacity={1} fill="url(#colorPerf)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="glass-card min-h-[400px] flex flex-col">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold">Efficiency by Dept 🏢</h3>
-            <button className="p-2 hover:bg-white/5 rounded-lg"><MoreVertical size={18} /></button>
+        <div className="card p-6 min-h-[420px] flex flex-col">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h3 className="text-lg font-bold">Efficiency Distribution</h3>
+              <p className="text-xs text-[#8b949e]">Departmental output analysis</p>
+            </div>
+            <MoreVertical size={16} className="text-[#8b949e] cursor-pointer" />
           </div>
           <div className="flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e293b" />
-                <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#30363d" />
+                <XAxis dataKey="name" stroke="#8b949e" fontSize={10} tickLine={false} axisLine={false} tickMargin={10} />
+                <YAxis stroke="#8b949e" fontSize={10} tickLine={false} axisLine={false} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                  contentStyle={{ backgroundColor: '#161b22', border: '1px solid #30363d', borderRadius: '8px' }}
+                  cursor={{ fill: 'rgba(255,255,255,0.02)' }}
                 />
-                <Bar dataKey="efficiency" fill="#10b981" radius={[6, 6, 0, 0]} barSize={40} />
+                <Bar dataKey="efficiency" fill="#3fb950" radius={[4, 4, 0, 0]} barSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>

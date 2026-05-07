@@ -7,7 +7,8 @@ import {
   Target, 
   Settings, 
   LogOut,
-  ChevronRight
+  ChevronRight,
+  ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
@@ -17,11 +18,11 @@ const Layout = ({ children }) => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: '/', emoji: '🏠' },
-    { icon: <Users size={20} />, label: 'Employees', path: '/employees', emoji: '👥' },
-    { icon: <BarChart3 size={20} />, label: 'Performance', path: '/performance', emoji: '📈' },
-    { icon: <Target size={20} />, label: 'Goals', path: '/goals', emoji: '🎯' },
-    { icon: <Settings size={20} />, label: 'Settings', path: '/settings', emoji: '⚙️' },
+    { icon: <LayoutDashboard size={20} />, label: 'Overview', path: '/' },
+    { icon: <Users size={20} />, label: 'Directory', path: '/employees' },
+    { icon: <BarChart3 size={20} />, label: 'Performance', path: '/performance' },
+    { icon: <Target size={20} />, label: 'Strategic Goals', path: '/goals' },
+    { icon: <Settings size={20} />, label: 'System Settings', path: '/settings' },
   ];
 
   const handleLogout = () => {
@@ -30,73 +31,82 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0f172a] text-white">
+    <div className="flex min-h-screen bg-[#0a0c10] text-[#f0f6fc]">
       {/* Sidebar */}
-      <aside className="w-72 glass-card m-4 mr-0 hidden md:flex flex-col">
-        <div className="p-6 mb-8">
+      <aside className="w-64 border-r border-[#30363d] bg-[#0d1117] hidden md:flex flex-col">
+        <div className="p-6 mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-2xl">
-              ⚡
-            </div>
-            <h2 className="text-xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              PerformIQ
-            </h2>
+            <ShieldCheck className="text-indigo-500" size={28} />
+            <h2 className="text-xl font-bold tracking-tight">PerformIQ</h2>
           </div>
         </div>
 
-        <nav className="flex-1 px-4 space-y-2">
+        <nav className="flex-1 px-4 space-y-1">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               className={({ isActive }) => 
-                `flex items-center justify-between p-3 rounded-xl transition-all duration-300 ${
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   isActive 
-                    ? 'bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_rgba(99,102,241,0.2)]' 
-                    : 'hover:bg-white/5 text-gray-400 hover:text-white'
+                    ? 'bg-indigo-500/10 text-indigo-400' 
+                    : 'text-[#8b949e] hover:bg-[#161b22] hover:text-[#f0f6fc]'
                 }`
               }
             >
-              <div className="flex items-center gap-3">
-                {item.icon}
-                <span className="font-medium">{item.label}</span>
-              </div>
-              <span className="text-sm">{item.emoji}</span>
+              {item.icon}
+              <span>{item.label}</span>
             </NavLink>
           ))}
         </nav>
 
-        <div className="p-4 mt-auto">
-          <div className="glass-card bg-white/5 p-4 rounded-2xl flex items-center gap-3 mb-4">
+        <div className="p-4 border-t border-[#30363d] bg-[#0d1117]">
+          <div className="flex items-center gap-3 px-2 mb-4">
             <img 
-              src={user?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'} 
-              alt="avatar" 
-              className="w-10 h-10 rounded-full bg-slate-800"
+              src={user?.avatar} 
+              alt="" 
+              className="w-9 h-9 rounded-full bg-[#161b22] border border-[#30363d]"
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold truncate">{user?.name || 'User'}</p>
-              <p className="text-xs text-gray-400 truncate uppercase">{user?.role || 'Role'}</p>
+              <p className="text-xs font-semibold truncate">{user?.name}</p>
+              <p className="text-[10px] text-[#8b949e] uppercase tracking-wider">{user?.role}</p>
             </div>
           </div>
           <button 
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 p-3 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-[#8b949e] hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-all"
           >
             <LogOut size={18} />
-            <span className="font-semibold text-sm">Sign Out</span>
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          {children}
-        </motion.div>
+      <main className="flex-1 overflow-y-auto">
+        {/* Top Header */}
+        <header className="h-16 border-b border-[#30363d] bg-[#0d1117] flex items-center justify-between px-8 sticky top-0 z-20">
+          <div className="flex items-center gap-2 text-sm text-[#8b949e]">
+            <span>System</span>
+            <ChevronRight size={14} />
+            <span className="text-[#f0f6fc] font-medium">Dashboard</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-[10px] font-bold border border-emerald-500/20">
+              LIVE
+            </div>
+          </div>
+        </header>
+
+        <div className="p-8 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {children}
+          </motion.div>
+        </div>
       </main>
     </div>
   );
