@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Mail, Loader2, ShieldCheck } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -26,87 +26,91 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0c10] relative overflow-hidden">
-      {/* Background Orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
-
+    <div className="auth-page">
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-[420px] px-6 z-10"
+        className="premium-card"
       >
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl mb-6">
-            <ShieldCheck className="text-indigo-500" size={32} />
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">PerformIQ</h1>
-          <p className="text-gray-400 text-sm">Enterprise Performance Management Platform</p>
+          <div className="text-5xl mb-4">✨</div>
+          <h1 className="mb-2">PerformIQ</h1>
+          <p className="text-sm font-medium tracking-wide">THE FUTURE OF EXCELLENCE 🚀</p>
         </div>
 
-        <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <AnimatePresence>
             {error && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-3 rounded-lg text-sm font-medium text-center">
-                {error}
-              </div>
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="bg-red-500/10 border border-red-500/20 text-red-200 p-3 rounded-xl text-xs font-bold text-center uppercase tracking-widest"
+              >
+                ⚠️ {error}
+              </motion.div>
             )}
+          </AnimatePresence>
 
-            <div className="input-group">
-              <label className="input-label">Corporate Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                <input 
-                  type="email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="input-field pl-10" 
-                  placeholder="name@company.com"
-                  required
-                />
-              </div>
+          <div className="space-y-1">
+            <label className="input-label">Corporate Email 📧</label>
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={18} />
+              <input 
+                type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="modern-input pl-12" 
+                placeholder="name@enterprise.com"
+                required
+              />
             </div>
-
-            <div className="input-group">
-              <div className="flex justify-between mb-2">
-                <label className="input-label mb-0">Password</label>
-                <span className="text-xs text-indigo-400 hover:text-indigo-300 cursor-pointer">Forgot?</span>
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                <input 
-                  type="password" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="input-field pl-10" 
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-            </div>
-
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="btn btn-primary w-full mt-2"
-            >
-              {loading ? <Loader2 className="animate-spin mr-2" size={20} /> : null}
-              {loading ? 'Authenticating...' : 'Sign In to Portal'}
-            </button>
-          </form>
-
-          <div className="mt-8 pt-6 border-t border-gray-800 text-center">
-            <p className="text-xs text-gray-500">
-              Authorized personnel only. Access is monitored and logged.
-            </p>
           </div>
-        </div>
 
-        <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500">
-            Need an account? <span className="text-indigo-400 font-medium hover:underline cursor-pointer">Contact Administration</span>
+          <div className="space-y-1">
+            <div className="flex justify-between items-center px-1">
+              <label className="input-label">Secure Password 🔒</label>
+              <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest hover:text-white cursor-pointer transition-colors">Forgot?</span>
+            </div>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={18} />
+              <input 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="modern-input pl-12" 
+                placeholder="••••••••"
+                required
+              />
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="btn-premium mt-4"
+          >
+            {loading ? (
+              <Loader2 className="animate-spin" size={20} />
+            ) : (
+              <>
+                <span>Sign In to Portal</span>
+                <ArrowRight size={18} />
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="mt-10 pt-8 border-t border-white/10 text-center">
+          <p className="text-xs font-bold tracking-widest uppercase opacity-40 mb-6">
+            Trusted by the world's best teams 🏢
           </p>
+          <div className="flex justify-center gap-6 opacity-30 grayscale hover:grayscale-0 transition-all duration-500">
+            <div className="text-lg font-black italic">APPLE-ISH</div>
+            <div className="text-lg font-black italic">STRIPE-Y</div>
+            <div className="text-lg font-black italic">SAAS-Y</div>
+          </div>
         </div>
       </motion.div>
     </div>
